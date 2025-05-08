@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NCCA Most Wanted Hackers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --clr-bg: #161618;
+      --clr-accent: #a7c7e7;
+      --clr-light: #ffffff;
+      --clr-muted: rgba(255,255,255,0.6);
+      --clr-notice: #FD0202;
+      --transition: 0.3s ease;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { background: var(--clr-bg); color: var(--clr-light); font-family: 'Roboto', sans-serif; overflow-x: hidden; line-height:1.6; }
+    nav { display:flex; justify-content:center; gap:2rem; padding:1rem 0; font-family:'Orbitron', sans-serif; }
+    nav a { position:relative; color:var(--clr-muted); text-decoration:none; padding:0.5rem; transition:var(--transition); }
+    nav a:hover, nav a.active { color:var(--clr-accent); }
+    nav a::after { content:''; position:absolute; left:50%; transform:translateX(-50%); bottom:0; width:0; height:2px; background:var(--clr-accent); transition:width var(--transition); }
+    nav a:hover::after, nav a.active::after { width:60%; }
+    .hero { position:relative; text-align:center; padding:4rem 1rem; background:url('https://source.unsplash.com/1600x900/?cybersecurity,code') center/cover no-repeat; }
+    .hero::before { content:''; position:absolute; inset:0; background:rgba(22,22,24,0.8); }
+    .hero-content { position:relative; z-index:1; max-width:700px; margin:0 auto; }
+    .hero h1 { font-family:'Orbitron',sans-serif; font-size:2.5rem; margin-bottom:1rem; color:var(--clr-accent); }
+    .hero p { font-size:1rem; color:var(--clr-muted); margin-bottom:2rem; }
+    .btn-primary { padding:0.75rem 1.5rem; background:transparent; border:2px solid var(--clr-accent); border-radius:2rem; color:var(--clr-accent); font-family:'Orbitron',monospace; text-transform:uppercase; cursor:pointer; transition:var(--transition); box-shadow:0 0 10px rgba(0,255,234,0.5); }
+    .btn-primary:hover { background:var(--clr-accent); color:var(--clr-bg); box-shadow:0 0 20px rgba(0,255,234,0.7); }
+    .search-bar { margin:2rem auto; max-width:500px; display:flex; gap:0.5rem; z-index:1; }
+    .search-bar input { flex:1; padding:0.75rem 1rem; border:none; border-radius:2rem; background:rgba(255,255,255,0.1); color:var(--clr-light); font-size:1rem; outline:none; }
+    .search-bar input::placeholder { color:var(--clr-muted); }
+    .search-bar button { padding:0 1rem; border:none; background:var(--clr-accent); color:var(--clr-bg); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); box-shadow:0 0 10px rgba(0,255,234,0.5); }
+    .search-bar button:hover { background:#00d2c2; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; padding:2rem; max-width:1400px; margin:0 auto; }
+    .card { position:relative; background:rgba(255,255,255,0.05); border-radius:1rem; overflow:hidden; backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.2); transition:var(--transition); cursor:pointer; display:flex; flex-direction:column; }
+    .card:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 8px 16px rgba(0,0,0,0.5); }
+    .card img { width:100%; height:220px; object-fit:cover; border-bottom:1px solid rgba(255,255,255,0.2); }
+    .notice { position:absolute; top:8px; right:8px; background: var(--clr-notice); color:#fff; padding:4px 8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; border:1px solid #800000; box-shadow:0 2px 6px rgba(0,0,0,0.8); clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%); }
+    .notice-black { background: #000; border:1px solid #333; }
+    .card-body { padding:1.5rem; flex:1; display:flex; flex-direction:column; }
+    .card-body h3 { margin-bottom:0.5rem; font-family:'Orbitron',monospace; font-size:1.3rem; color:var(--clr-accent); }
+    .card-body p { flex:1; color:var(--clr-muted); font-size:0.9rem; margin-bottom:1rem; }
+    .card-body .btn-danger { padding:0.6rem 1.2rem; border:none; background:#ff3860; color:var(--clr-light); border-radius:1rem; text-transform:uppercase; font-size:0.8rem; cursor:pointer; align-self:flex-start; transition:var(--transition); box-shadow:0 0 10px rgba(255,56,96,0.5); }
+    .card-body .btn-danger:hover { background:#ff1f4b; box-shadow:0 0 20px rgba(255,56,96,0.7); }
+    .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:1000; }
+    .modal { background:var(--clr-bg); border-radius:1rem; width:90%; max-width:500px; max-height:80vh; overflow:auto; box-shadow:0 8px 16px rgba(0,0,0,0.8); }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:1px solid rgba(255,255,255,0.2); }
+    .modal-header h2 { margin:0; font-family:'Orbitron'; font-size:1.5rem; color:var(--clr-accent); }
+    .modal-close { background:none; border:none; font-size:1.5rem; color:var(--clr-muted); cursor:pointer; }
+    .modal-tabs { display:flex; border-bottom:1px solid rgba(255,255,255,0.2); }
+    .modal-tabs button { flex:1; padding:0.75rem; background:none; border:none; color:var(--clr-muted); font-family:'Orbitron'; cursor:pointer; transition:var(--transition); }
+    .modal-tabs button.active { color:var(--clr-accent); border-bottom:2px solid var(--clr-accent); }
+    .tab-content { padding:1rem; display:none; max-height:calc(80vh - 120px); overflow-y:auto; }
+    .tab-content.active { display:block; }
+    footer { text-align:center; padding:1rem; font-size:0.875rem; color:var(--clr-muted); margin-top:2rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" class="active">Home</a>
+    <a href="https://www.fbi.gov/history" target="_blank">About</a>
+    <a href="#wanted">Most Wanted</a>
+  </nav>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>National Cyber Crime Authority</h1>
+      <p>Join us in the fight against cybercrime. Your intelligence is crucial help us eliminate digital threats and bring criminals to justice.</p>
+            <p>In partnership with FBI INTERPOL Europol & CIA</p>
+                        <p>https://www.europol.europa.eu/</p>
+
+
+      <button class="btn-primary" onclick="document.getElementById('wanted').scrollIntoView({ behavior:'smooth' })">View Most Wanted</button>
+    </div>
+  </section>
+  <div class="search-bar">
+    <input type="text" placeholder="Search alias, location, or skillset" />
+    <button title="Search">🔍</button>
+  </div>
+  <section id="wanted" class="grid"></section>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalName"></h2>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-tabs">
+        <button data-tab="bio" class="active" onclick="switchTab(event)">Profile</button>
+        <button data-tab="details" onclick="switchTab(event)">Details</button>
+      </div>
+      <div id="bio" class="tab-content active">
+        <img id="modalImage" src="" alt="Profile Image" style="width:100%; height:auto; border-radius:0.5rem; margin-bottom:1rem;">
+        <p id="modalBio"></p>
+      </div>
+      <div id="details" class="tab-content">
+        <p><strong>Alias:</strong> <span id="modalAlias"></span></p>
+        <p><strong>Last Seen:</strong> <span id="modalLastSeen"></span></p>
+        <p><strong>Charges:</strong> <span id="modalCharges"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>&copy; <span id="year"></span> National Cyber Crime Authority. All Rights Reserved.</footer>
+
+  <script>
+    const profiles = [
+      { id:0,  name:'Denis Igorevich Denisenko', alias:'GRU Conspirator',   lastSeen:'Aug 2024',  charges:'Computer Intrusion Conspiracy, Destructive Malware',            bio:'Alleged GRU conspirator targeting government systems via destructive malware for strategic benefit of Russia.', image:'https://www.fbi.gov/wanted/cyber/denis-igorevich-denisenko/@@images/image/preview', noticeType:'red' },
+      { id:1,  name:'Yuriy Fedorovich Denisov', alias:'Infra Ops Mastermind', lastSeen:'Jul 2024',  charges:'Critical Infrastructure Intrusion',                           bio:'Accused of orchestrating intrusive operations on government critical infrastructure alongside GRU Unit 29155.', image:'https://www.fbi.gov/wanted/cyber/yuriy-fedorovich-denisov/@@images/image/preview', noticeType:'red' },
+      { id:2,  name:'Dmitriy Yuryevich Goloshubov', alias:'WhisperGate Developer', lastSeen:'May 2024',  charges:'Computer Intrusion, Malware Deployment',                       bio:'Charged with deploying WhisperGate malware against allied nations; alleged Computer Intrusion Conspiracy.', image:'https://www.fbi.gov/wanted/cyber/dmitriy-yuryevich-goloshubov/@@images/image/preview', noticeType:'red' },
+      { id:3,  name:'Nikolay Aleksandrovich Korchagin', alias:'Wire Fraud Operative', lastSeen:'Jun 2024',  charges:'Wire Fraud Conspiracy, Hacking',                              bio:'Former Russian military intelligence operative; charged in Wire Fraud Conspiracy and computer hacking.', image:'https://www.fbi.gov/wanted/cyber/nikolay-aleksandrovich-korchagin/@@images/image/preview', noticeType:'red' },
+      { id:4,  name:'Amin Timovich Stigal', alias:'Destruction Specialist',  lastSeen:'Aug 2024',  charges:'Destructive Malware Conspiracy',                             bio:'Civilian hacker collaborator with GRU Unit 29155, accused in destructive malware conspiracy.', image:'https://www.fbi.gov/wanted/cyber/amin-timovich-stigal/@@images/image/preview', noticeType:'red' },
+      { id:5,  name:'Igor Dekhtyarchuk', alias:'Infrastructure Saboteur', lastSeen:'Apr 2024',  charges:'WhisperGate Intrusions',                                     bio:'Alleged associate of GRU Unit 29155, accused of coordinating WhisperGate malware intrusions on critical infrastructure.', image:'https://www.fbi.gov/wanted/cyber/igor-dekhtyarchuk/@@images/image/preview', noticeType:'red' },
+      { id:6,  name:'Yevgeniy Igorevich Polyanin', alias:'Data Destruction Expert', lastSeen:'Jul 2024',  charges:'Hacking, Data Destruction',                                   bio:'Accused GRU operative involved in computer hacking and data destruction schemes targeting allied nations.', image:'https://www.fbi.gov/wanted/cyber/yevgeniy-igorevich-polyanin/@@images/image/preview', noticeType:'red' },
+      { id:7,  name:'Sergey Vladimirovich Detistov', alias:'Malware Coordinator',  lastSeen:'Jun 2024',  charges:'Destructive Malware Campaigns',                             bio:'Charged with coordinating destructive malware campaigns under GRU Unit 29155, targeting critical infrastructure.', image:'https://www.fbi.gov/wanted/cyber/sergey-vladimirovich-detistov/@@images/image/preview', noticeType:'red' },
+      { id:8,  name:'Aleksandr Vladimirovich Osadchuk', alias:'GRU Intrusions Officer', lastSeen:'May 2024',  charges:'Cyber Intrusions',                                           bio:'Alleged GRU Unit 29155 officer involved in cyber intrusions against critical infrastructure using destructive malware.', image:'https://www.fbi.gov/wanted/cyber/aleksandr-vladimirovich-osadchuk/@@images/image/preview', noticeType:'red' },
+      { id:9,  name:'Sergey Aleksandrovich Morgachev', alias:'WhisperGate Operator', lastSeen:'Jul 2024',  charges:'Malware Campaign Coordination',                            bio:'Alleged GRU operator accused of coordinating WhisperGate and related malware campaigns targeting allied nations.', image:'https://www.fbi.gov/wanted/cyber/sergey-aleksandrovich-morgachev/@@images/image/preview', noticeType:'red' },
+      { id:10, name:'Aleksey Viktorovich Lukashev', alias:'Ransomware Expert', lastSeen:'Aug 2024',  charges:'Ransomware and Destructive Malware',                        bio:'Accused GRU hacker specializing in ransomware and destructive malware operations against government and financial sectors.', image:'https://www.fbi.gov/wanted/cyber/aleksey-viktorovich-lukashev/@@images/image/preview', noticeType:'red' },
+      { id:11, name:'Boris Alekseyevich Antonov', alias:'WhisperGate Conspirator', lastSeen:'Jun 2024',  charges:'Malware Deployment Conspiracy',                             bio:'Accused in conspiracy to deploy WhisperGate malware, targeting government and critical infrastructure networks.', image:'https://www.fbi.gov/wanted/cyber/boris-alekseyevich-antonov/@@images/image/preview', noticeType:'red' },
+      { id:12, name:'Daniel Derakhshan', alias:'Unknown Threat Actor', lastSeen:'May 2025',  charges:'Conspiracy to Commit Computer Intrusion & Damage, Wire Fraud Conspiracy, Distribution of Malware, Unlawful Access to Protected Systems, Attacks Against Critical Services & Commerce', bio:'Daniel Derakhshan is accused and wanted in connection with multiple cybercrimes across international borders. Linked to the May 2025 leak of over 19 billion passwords, trafficking stolen data, intrusions into Roblox infrastructure, malware distribution, and DDoS attacks on Ukraine.', image:'https://img.freepik.com/premium-photo/unknown-male-silhouette-person_68747-222.jpg', noticeType:'black' },
+      { id:13, name:'Kim Li', alias:'RGB Conspirator', lastSeen:'Dec 2020',  charges:'Conspiracy to Commit Wire Fraud & Bank Fraud, Conspiracy to Commit Computer Fraud', bio:'Kim Li is alleged to have participated in a North Korean RGB hacking conspiracy (Lazarus Group/APT38), developing malicious crypto apps, cyber-enabled heists, and targeting the Marine Chain ICO. A U.S. federal warrant was issued Dec 8, 2020.', image:'https://www.fbi.gov/wanted/cyber/kim-il/@@images/image/preview', noticeType:'red' },
+      { id:14, name:'Unknown Cyber Threat Actor I', alias:'Unknown', lastSeen:'Unknown', charges:'Leaking Millions of Stolen Credit Cards', bio:'Accused of leaking millions of stolen credit cards.', image:'https://img.freepik.com/premium-photo/unknown-male-silhouette-person_68747-222.jpg', noticeType:'black' },
+      { id:15, name:'Unknown Cyber Threat Actor II', alias:'Unknown', lastSeen:'Unknown', charges:'Leaking Millions of Stolen Credit Cards', bio:'Accused of leaking millions of stolen credit cards.', image:'https://img.freepik.com/premium-photo/unknown-male-silhouette-person_68747-222.jpg', noticeType:'black' }
+    ];
+
+    const grid = document.querySelector('#wanted');
+    profiles.forEach(profile => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const noticeText = profile.noticeType === 'black' ? 'NCCA Black Notice' : 'NCCA Red Notice';
+      const noticeClass = profile.noticeType === 'black' ? 'notice notice-black' : 'notice';
+      const buttonText = profile.noticeType === 'black' ? 'Help Identify' : 'Report Tip';
+      card.innerHTML = `
+        <div class="${noticeClass}">${noticeText}</div>
+        <img src="${profile.image}" alt="${profile.name}">
+        <div class="card-body">
+          <h3>${profile.name}</h3>
+          <p>${profile.bio}</p>
+          <button class="btn-danger" data-id="${profile.id}">${buttonText}</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    document.body.addEventListener('click', e => {
+      if (e.target.matches('.btn-danger')) openModal(parseInt(e.target.dataset.id));
+    });
+
+    function openModal(id) {
+      const p = profiles.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('modalName').textContent = p.name;
+      document.getElementById('modalImage').src = p.image;
+      document.getElementById('modalBio').textContent = p.bio;
+      document.getElementById('modalAlias').textContent = p.alias;
+      document.getElementById('modalLastSeen').textContent = p.lastSeen;
+      document.getElementById('modalCharges').textContent = p.charges;
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('profileModal').style.display = 'none';
+    }
+    function switchTab(e) {
+      const tab = e.target.dataset.tab;
+      document.querySelectorAll('.modal-tabs button').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+    }
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
